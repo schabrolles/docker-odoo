@@ -15,7 +15,6 @@ fi
 
 export PGPASSWORD=$PGPASSWORD
 
-i
 psql -U postgres -h $DB_HOST -f /change.sql  
 
 #/etc/init.d/postgresql start
