@@ -1,7 +1,9 @@
 FROM ubuntu
 MAINTAINER s.chabrolles@fr.ibm.com
 
-RUN adduser --system --home=/opt/odoo --group odoo
+ENV GOOS=linux
+
+RUN /usr/sbin/adduser --system --home=/opt/odoo --group odoo
 
 RUN apt-get update
 
@@ -12,6 +14,7 @@ python-pychart python-pydot python-pyparsing python-pypdf python-reportlab pytho
 python-simplejson python-tz python-unittest2 python-vatnumber python-vobject python-werkzeug \
 python-xlwt python-yaml wkhtmltopdf git
 
+RUN apt-get install -y postgresql-client
 
 USER odoo 
 RUN git clone https://www.github.com/odoo/odoo --depth 1 --branch 8.0 --single-branch /opt/odoo 
@@ -26,6 +29,7 @@ USER root
 #chmod 640 /etc/odoo-server.conf
 ADD ./odoo-server.conf /etc/odoo-server.conf
 ADD ./start_all.sh /start_all.sh
+ADD ./change.sql /change.sql
 RUN chown odoo: /etc/odoo-server.conf &&\
  chmod 640 /etc/odoo-server.conf &&\
  chmod a+x /start_all.sh
